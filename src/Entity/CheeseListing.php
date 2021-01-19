@@ -2,9 +2,11 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\CheeseListingRepository;
-
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Carbon\Carbon;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -14,12 +16,15 @@ use Symfony\Component\Serializer\Annotation\SerializedName;
  * @ApiResource(
  *      collectionOperations={"get", "post"},
  *      itemOperations={
- *     "get"={"path"="ilovecheeses/{id}"},
- *     "put"},
+ *     "get"={"path"="cheeses/{id}"},
+ *     "put"
+ *  },
  *     normalizationContext={"groups"={"cheese_listing:read"}, "swagger_definition_name"="Read"},
  *     denormalizationContext={"groups"={"cheese_listing:write"}, "swagger_definition_name"="Write"},
  *     shortName="cheeses")
  * @ORM\Entity(repositoryClass="App\Repository\CheeseListingRepository", repositoryClass=CheeseListingRepository::class)
+ * @ApiFilter (BooleanFilter::class, properties={"isPublished"})
+ * @ApiFilter (SearchFilter::class, properties={"title": "partial"})
  */
 class CheeseListing
 {
@@ -89,7 +94,7 @@ class CheeseListing
     /**
      * The description of the cheese as raw text.
      * @Groups({"cheese_listing:write"})
-     * @SerializedName("description")
+     * @SerializedName("descriptionss")
      */
 
     public function setTextDescription(string $description): self
@@ -117,7 +122,7 @@ class CheeseListing
     }
 
     /**
-     * How long ago in text that this cheese listing was added
+     * How long ago in text that this cheese listing was addeddd
      *
      * @Groups({"cheese_listing:read"})
      */
